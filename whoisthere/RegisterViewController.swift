@@ -88,7 +88,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate
         let buttonTitle = userData.hasAllDataFilled ? "_save".localized : "_next".localized
         nextButton.setTitle(buttonTitle, for: .normal)
         
-        avatarButton.setImage(UIImage(named: String(format: "%@%d", Constants.kAvatarImagePrefix, userData.avatarId)), for: UIControlState.normal)
+        avatarButton.setImage(UIImage(named: String(format: "%@%d", Constants.kAvatarImagePrefix, userData.avatarId)), for: UIControl.State.normal)
         self.view.backgroundColor = Constants.colors[userData.colorId]
         
         nameTextField.text = userData.name

@@ -46,7 +46,7 @@ class MainViewController: UICollectionViewController {
         updateAdvertisingData()
     }
     
-    func rightButtonAction(sender: UIBarButtonItem) {
+    @objc func rightButtonAction(sender: UIBarButtonItem) {
         
         let registerVC = self.storyboard?.instantiateViewController(withIdentifier: "RegisterController") as! RegisterViewController
         self.navigationController?.pushViewController(registerVC, animated: true)
@@ -57,7 +57,7 @@ class MainViewController: UICollectionViewController {
         timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(self.clearPeripherals), userInfo: nil, repeats: true)
     }
     
-    func clearPeripherals(){
+    @objc func clearPeripherals(){
         
         visibleDevices = cachedDevices
         cachedDevices.removeAll()

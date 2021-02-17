@@ -37,7 +37,7 @@ class ChatViewController: UIViewController {
         super.viewDidLoad()
         
         tableView.estimatedRowHeight = 68.0
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         
         tableView.register(UINib(nibName: cellDefinition, bundle: nil), forCellReuseIdentifier: cellDefinition)
         
@@ -70,22 +70,22 @@ class ChatViewController: UIViewController {
     // Following methods are needed for pushing bottomContainer view up and down when keyboard is shown and hidden.
     func registerForKeyboardNotifications()
     {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     
     func deregisterFromKeyboardNotifications()
     {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    func keyboardWasShown(notification: NSNotification){
+    @objc func keyboardWasShown(notification: NSNotification){
         animateViewMoving(up: true, notification: notification)
     }
     
-    func keyboardWillBeHidden(notification: NSNotification){
+    @objc func keyboardWillBeHidden(notification: NSNotification){
         
         animateViewMoving(up: false, notification: notification)
     }
@@ -93,8 +93,8 @@ class ChatViewController: UIViewController {
     func animateViewMoving (up:Bool, notification :NSNotification){
         let movementDuration:TimeInterval = 0.3
         
-        var info = notification.userInfo!
-        let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
+        let info = notification.userInfo!
+        let keyboardSize = (info[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
         let moveValue = keyboardSize?.height ?? 0
         let movement:CGFloat = ( up ? -moveValue : moveValue)
         
@@ -214,7 +214,7 @@ extension ChatViewController : CBPeripheralManagerDelegate {
         for request in requests {
             if let value = request.value {
                 
-                let messageText = String(data: value, encoding: String.Encoding.utf8) as String!
+                let messageText = String(data: value, encoding: String.Encoding.utf8) as String?
                 appendMessageToChat(message: Message(text: messageText!, isSent: false))
             }
             self.peripheralManager.respond(to: request, withResult: .success)
@@ -266,7 +266,7 @@ extension ChatViewController: UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
      
 
